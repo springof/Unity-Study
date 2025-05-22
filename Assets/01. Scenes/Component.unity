@@ -133,7 +133,7 @@ GameObject:
   - component: {fileID: 60638449}
   m_Layer: 0
   m_Name: Cube
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -514,7 +514,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7009e8cf8e5fa324f8cdcf5f16c60abf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  changeName: "\uBA54\uC778 \uCE74\uBA54\uB77C"
+  obj: {fileID: 0}
+  msh: {fileID: 0}
+  mat: {fileID: 0}
+  objTf: {fileID: 0}
 --- !u!4 &1471648734
 Transform:
   m_ObjectHideFlags: 0
