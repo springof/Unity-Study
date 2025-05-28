@@ -1,26 +1,24 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
-public class Transform_LoopMap : MonoBehaviour
+public class PipeMovement : MonoBehaviour
 {
     public float moveSpeed = 3f;
-    public float height;
+    public float returnPosX = 10f;
+    public float randomPosY;
+    //-5.5 ~ -1.1
     public Vector3 returnPos;
-    void Start()
-    {
-        height = transform.position.y; // ÇöÀç ³ôÀÌ¸¦ ÀúÀå
-        returnPos = new Vector3(30f, height, 0f); 
-    }
 
     void Update()
     {
-        //¹è°æ ¿ŞÂÊÀ¸·Î ÀÌµ¿
+        //ë°°ê²½ ì™¼ìª½ìœ¼ë¡œ ì´ë™
         //transform.position += Vector3.left * moveSpeed * Time.deltaTime;
         transform.position += Vector3.left * moveSpeed * Time.fixedDeltaTime;
 
-        //ÀÌ¹ÌÁö°¡ ¿ŞÂÊÀ¸·Î ÀÌµ¿ÇÏ¿© È­¸é ¹ÛÀ¸·Î ³ª°¬À» ¶§, À§Ä¡¸¦ ÃÊ±âÈ­
-        if (transform.position.x <= -30f)
+        //ì´ë¯¸ì§€ê°€ ì™¼ìª½ìœ¼ë¡œ ì´ë™í•˜ì—¬ í™”ë©´ ë°–ìœ¼ë¡œ ë‚˜ê°”ì„ ë•Œ, ìœ„ì¹˜ë¥¼ ì´ˆê¸°í™”
+        if (transform.position.x <= -returnPosX)
         {
-            transform.position = returnPos;
+            randomPosY = Random.Range(-5.5f, -1.1f); // yì¶• ìœ„ì¹˜ë¥¼ ëœë¤ìœ¼ë¡œ ì„¤ì •
+            transform.position = new Vector3(returnPosX, randomPosY, 1f);
         }
     }
 }
