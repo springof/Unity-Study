@@ -1,20 +1,22 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 public class Movement : MonoBehaviour
 {
     public float moveSpeed = 5f;
 
+    public static int coinCount = 0;
+
     void Update()
     {
         /// Input System
-        /// ÀÌµ¿ > WASD, ¹æÇâÅ°
-        /// Á¡ÇÁ > Space
-        /// ¹ß»ç > ¸¶¿ì½º Å¬¸¯
+        /// ì´ë™ > WASD, ë°©í–¥í‚¤
+        /// ì í”„ > Space
+        /// ë°œì‚¬ > ë§ˆìš°ìŠ¤ í´ë¦­
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis("Vertical");
 
         //Vector3 dir = new Vector3(h, 0, v);
-        //Debug.Log($"ÇöÀç ÀÔ·Â : {dir}");
+        //Debug.Log($"í˜„ì¬ ì…ë ¥ : {dir}");
 
         //transform.position += dir * moveSpeed * Time.deltaTime;
 
@@ -25,4 +27,5 @@ public class Movement : MonoBehaviour
 
         transform.LookAt(transform.position + normalDir);
     }
+    
 }
