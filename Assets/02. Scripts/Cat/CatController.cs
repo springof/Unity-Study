@@ -1,8 +1,11 @@
 ﻿using UnityEngine;
+using Cat;
 
 public class CatController : MonoBehaviour
 {
+    public SoundManager soundManager;
     private Rigidbody2D catRb;
+    private Animator catAnim;
     public float jumpForce = 3f;
     public static float catHealth = 100f;
     public bool isGround = false;
@@ -11,6 +14,7 @@ public class CatController : MonoBehaviour
     void Start()
     {
         catRb = GetComponent<Rigidbody2D>();
+        catAnim = GetComponent<Animator>();
     }
 
     void Update()
@@ -18,8 +22,11 @@ public class CatController : MonoBehaviour
         // 키 입력 받기
         if (Input.GetKeyDown(KeyCode.Space) && jumpCount < 2)
         {
+            catAnim.SetTrigger("Jump"); // 점프 애니메이션 트리거
+            catAnim.SetBool("Fall", false); // 점프 애니메이션 시작 시 Fall 상태 해제
             //점프 = y축 방향으로 이동 X
             catRb.AddForceY(jumpForce, ForceMode2D.Impulse);
+            soundManager.OnJumpSound(); // 점프 사운드 재생
             jumpCount++;
         }
 
@@ -36,6 +43,7 @@ public class CatController : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Ground"))
         {
+            catAnim.SetBool("Fall", true);
             isGround = true;
             jumpCount = 0; // 땅에 닿으면 점프 카운트 초기화
         }
