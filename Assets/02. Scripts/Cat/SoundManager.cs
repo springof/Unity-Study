@@ -23,7 +23,7 @@ namespace Cat
             audioSource.clip = bgmClip;
             audioSource.playOnAwake = true;
             audioSource.loop = true;
-            audioSource.volume = 0.5f;
+            audioSource.volume = 0.3f;
 
             audioSource.Play();
         }

@@ -2,21 +2,28 @@
 
 public class DoorEvent : MonoBehaviour
 {
-    private Animator animator;
+    private Animator anim;
+
+    public GameObject doorLock;
+
+    public string openKey;
+    public string closeKey;
 
     private void Start()
     {
-        animator = GetComponent<Animator>();
+        anim = GetComponent<Animator>();
     }
     void OnTriggerEnter(Collider collision)
     {
         if (collision.CompareTag("Player"))
-            animator.SetTrigger("Open");
+        {
+            doorLock.SetActive(true);
+        }
     }
 
     void OnTriggerExit(Collider collision)
     {
         if (collision.CompareTag("Player"))
-            animator.SetTrigger("Close");
+            doorLock.SetActive(false);
     }
 }

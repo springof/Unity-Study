@@ -17,7 +17,7 @@ public class PipeMovement : MonoBehaviour
         //이미지가 왼쪽으로 이동하여 화면 밖으로 나갔을 때, 위치를 초기화
         if (transform.position.x <= -returnPosX)
         {
-            randomPosY = Random.Range(-5.5f, -1.1f); // y축 위치를 랜덤으로 설정
+            randomPosY = Random.Range(-5.5f, -2.5f); // y축 위치를 랜덤으로 설정
             transform.position = new Vector3(returnPosX, randomPosY, 1f);
         }
     }
