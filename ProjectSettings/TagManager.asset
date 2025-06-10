@@ -10,6 +10,8 @@ TagManager:
   - Score3
   - Score10
   - GameOver
+  - Cherry
+  - Pipe
   layers:
   - Default
   - TransparentFX
