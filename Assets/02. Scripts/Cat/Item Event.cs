@@ -9,10 +9,9 @@ public class ItemEvent : MonoBehaviour
     public GameObject cherry;
     public GameObject pipe;
 
-    public float moveSpeed = 3f;
+    public float moveSpeed = 0.0001f;
     public float returnPosX = 10f;
     public float randomPosY;
-    //-5.5 ~ -1.1
     public Vector3 returnPos;
 
     private void Start()

@@ -3,7 +3,7 @@
 public class Material_LoopMap : MonoBehaviour
 {
     private MeshRenderer renderers;
-    public float offsetSpeed = 0.1f;
+    public float offsetSpeed = 0.0001f;
 
     void Start()
     {

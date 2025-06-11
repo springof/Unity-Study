@@ -1,22 +1,21 @@
 ﻿using UnityEngine;
 using Cat;
 using cat;
+using System.Collections;
 
 public class CatController : MonoBehaviour
 {
     public SoundManager soundManager;
+    public VideoManager videoManager;
 
     public GameObject gameOverUI;
     public GameObject fadeUI;
 
-    public GameObject happyVideo;
-    public GameObject sadVideo;
-
     private Rigidbody2D catRb;
     private Animator catAnim;
 
-    public float jumpPorce = 10f;
-    public float limitPower = 5f; // 점프 속도 제한
+    public float jumpPorce = 15f;
+    public float limitPower = 10f; // 점프 속도 제한
     public static float catHealth = 100f;
     public int jumpCount = 0; // 점프 횟수
 
@@ -46,27 +45,39 @@ public class CatController : MonoBehaviour
         if (transform.position.y < -5f || catHealth <= 0f)
         {
             // y축 위치가 -5보다 작으면 게임 오버
-            Debug.Log("Game Over"); // 게임 오버
             GameManager.isPlay = false; // 게임 플레이 상태 해제
             gameOverUI.SetActive(true); // 게임 오버 UI 활성화
             fadeUI.SetActive(true); // 페이드 UI 활성화
             fadeUI.GetComponent<FadeRoutine>().OnFade(3f, Color.black); // 페이드 효과 적용
             this.GetComponent<CircleCollider2D>().enabled = false; // 충돌체 비활성화
 
-            Invoke("SadVideo", 5f); // 5초 후에 SadVideo 메소드 호출
+            //Invoke("SadVideo", 5f); // 5초 후에 SadVideo 메소드 호출
+            StartCoroutine(EndingRoutine(false)); // 게임 오버 루틴 시작
         }
 
-        if (GameManager.score >= 10)
+        if (GameManager.score >= 15)
         {
             // 점수가 10점 이상이면 게임 승리
-            Debug.Log("You Win!"); // 게임 승리
             GameManager.isPlay = false; // 게임 플레이 상태 해제
             fadeUI.SetActive(true); // 페이드 UI 활성화
             fadeUI.GetComponent<FadeRoutine>().OnFade(3f, Color.green); // 페이드 효과 적용
             this.GetComponent<CircleCollider2D>().enabled = false; // 충돌체 비활성화
 
-            Invoke("HappyVideo", 5f); // 5초 후에 HappyVideo 메소드 호출
+            //Invoke("HappyVideo", 5f); // 5초 후에 HappyVideo 메소드 호출
+            StartCoroutine(EndingRoutine(true)); // 게임 승리 루틴 시작
         }
+    }
+
+    IEnumerator EndingRoutine(bool isHappy)
+    {
+        yield return new WaitForSeconds(3.5f); // 5초 대기
+        videoManager.VideoPlay(isHappy);
+
+        //yield return new WaitUntil(() => videoManager.vPlayer.isPlaying);
+
+        fadeUI.SetActive(false); // 페이드 UI 비활성화
+        gameOverUI.SetActive(false); // 게임 오버 UI 비활성화
+        soundManager.audioSource.mute = true; // 사운드 음소거
     }
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -90,22 +101,5 @@ public class CatController : MonoBehaviour
         {
             soundManager.OnColliderSound(); // 충돌 사운드 재생
         }
-    }
-
-    public void HappyVideo()
-    {
-        happyVideo.SetActive(true); // 행복한 비디오 활성화
-        fadeUI.SetActive(false); // 페이드 UI 비활성화
-        gameOverUI.SetActive(false); // 게임 오버 UI 비활성화
-
-        soundManager.audioSource.mute = true; // 사운드 음소거
-    }
-    public void SadVideo()
-    {
-        sadVideo.SetActive(true); // 슬픈 비디오 활성화
-        fadeUI.SetActive(false); // 페이드 UI 비활성화
-        gameOverUI.SetActive(false); // 게임 오버 UI 비활성화
-
-        soundManager.audioSource.mute = true; // 사운드 음소거
     }
 }
