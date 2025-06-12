@@ -26,6 +26,14 @@ public class CatController : MonoBehaviour
         catAnim = GetComponent<Animator>();
     }
 
+    private void OnEnable()
+    {
+        transform.localPosition = new Vector3(-5f, -3.1f, 0f);
+        GetComponent<CircleCollider2D>().enabled = true;
+        soundManager.audioSource.mute = false;
+        catHealth = 100f; // 고양이 체력 초기화
+    }
+
     void Update()
     {
         // 키 입력 받기
@@ -48,7 +56,7 @@ public class CatController : MonoBehaviour
             GameManager.isPlay = false; // 게임 플레이 상태 해제
             gameOverUI.SetActive(true); // 게임 오버 UI 활성화
             fadeUI.SetActive(true); // 페이드 UI 활성화
-            fadeUI.GetComponent<FadeRoutine>().OnFade(3f, Color.black); // 페이드 효과 적용
+            fadeUI.GetComponent<FadeRoutine>().OnFade(3f, Color.black, true); // 페이드 효과 적용
             this.GetComponent<CircleCollider2D>().enabled = false; // 충돌체 비활성화
 
             //Invoke("SadVideo", 5f); // 5초 후에 SadVideo 메소드 호출
@@ -60,7 +68,7 @@ public class CatController : MonoBehaviour
             // 점수가 10점 이상이면 게임 승리
             GameManager.isPlay = false; // 게임 플레이 상태 해제
             fadeUI.SetActive(true); // 페이드 UI 활성화
-            fadeUI.GetComponent<FadeRoutine>().OnFade(3f, Color.green); // 페이드 효과 적용
+            fadeUI.GetComponent<FadeRoutine>().OnFade(3f, Color.white, true); // 페이드 효과 적용
             this.GetComponent<CircleCollider2D>().enabled = false; // 충돌체 비활성화
 
             //Invoke("HappyVideo", 5f); // 5초 후에 HappyVideo 메소드 호출
@@ -71,13 +79,18 @@ public class CatController : MonoBehaviour
     IEnumerator EndingRoutine(bool isHappy)
     {
         yield return new WaitForSeconds(3.5f); // 5초 대기
+        transform.parent.gameObject.SetActive(false); // PLAY 오브젝트 비활성화
+        Debug.Log("Ending Routine Start");
+
         videoManager.VideoPlay(isHappy);
-
-        //yield return new WaitUntil(() => videoManager.vPlayer.isPlaying);
-
+        Debug.Log("Ending Routine End");
+        var newColor = isHappy ? Color.white : Color.black;
+        fadeUI.GetComponent<FadeRoutine>().OnFade(3f, newColor, false); // 페이드 효과 해제
+        Debug.Log("Fade Routine Ended");
         fadeUI.SetActive(false); // 페이드 UI 비활성화
         gameOverUI.SetActive(false); // 게임 오버 UI 비활성화
-        soundManager.audioSource.mute = true; // 사운드 음소거
+        soundManager.audioSource.Stop();
+        //soundManager.audioSource.mute = true; // 사운드 음소거
     }
     private void OnTriggerEnter2D(Collider2D other)
     {

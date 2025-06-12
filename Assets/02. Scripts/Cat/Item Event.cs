@@ -14,10 +14,18 @@ public class ItemEvent : MonoBehaviour
     public float randomPosY;
     public Vector3 returnPos;
 
-    private void Start()
+    private Vector3 initPos;
+
+    private void Awake()
     {
-        SetRandomSetting(transform.position.x);
+        initPos = transform.position;
     }
+
+    private void OnEnable()
+    {
+        SetRandomSetting(initPos.x);
+    }
+
     void Update()
     {
         //배경 왼쪽으로 이동
