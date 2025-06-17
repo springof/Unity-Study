@@ -2,16 +2,25 @@
 
 public class Gun : MonoBehaviour, IDropItem
 {
-    public void Get()
+    public GameObject bulletPrefab; // Prefab for the bullet
+    public Transform shootPos;
+
+    public void Grab(Transform grabPos)
     {
-        Debug.Log("Gun is picked up!");
+        transform.SetParent(grabPos); // Set parent to grab position
+        transform.localPosition = Vector3.zero; // Reset local position
+        transform.localRotation = Quaternion.identity; // Reset local rotation
     }
     public void Use()
     {
-        Debug.Log("Gun is fired!");
+        GameObject bullet = Instantiate(bulletPrefab, shootPos.position, Quaternion.identity);
+        Rigidbody bulletRb = bullet.GetComponent<Rigidbody>();
+
+        bulletRb.AddForce(shootPos.forward * 50f, ForceMode.Impulse);
     }
     public void Drop()
     {
-        Debug.Log("Gun is dropped!");
+        transform.SetParent(null); // Remove parent to drop the item
+        transform.position = Vector3.zero;
     }
 }

@@ -2,20 +2,23 @@
 
 public class FlashLight : MonoBehaviour, IDropItem
 {
-    //public GameObject lightObj;
-    //public bool isLight = false;
-    public void Get()
+    public GameObject lightObj;
+    public bool isLight = false;
+
+    public void Grab(Transform grabPos)
     {
-        Debug.Log("Flashlight is picked up!");
+        transform.SetParent(grabPos); // Set parent to grab position
+        transform.localPosition = Vector3.zero; // Reset local position
+        transform.localRotation = Quaternion.identity; // Reset local rotation
     }
     public void Use()
     {
-        //isLight = !isLight;
-        //lightObj.SetActive(isLight);
-        Debug.Log("Flashlight is turned on!");
+        isLight = !isLight;
+        lightObj.SetActive(isLight);
     }
     public void Drop()
     {
-        Debug.Log("Flashlight is dropped!");
+        transform.SetParent(null); // Remove parent to drop the item
+        transform.position = Vector3.zero;
     }
 }

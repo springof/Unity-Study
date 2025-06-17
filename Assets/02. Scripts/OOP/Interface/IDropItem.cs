@@ -2,7 +2,7 @@
 
 public interface IDropItem
 {
-    void Get();
+    void Grab(Transform grabPos);
     void Use();
     void Drop();
 }
