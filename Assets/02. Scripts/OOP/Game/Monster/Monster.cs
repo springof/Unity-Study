@@ -53,7 +53,7 @@ public abstract class Monster : MonoBehaviour
         }
     }
 
-    IEnumerator Hit(float damage)
+    public IEnumerator Hit(float damage)
     {
         if (isHit) yield break; // Prevent multiple hits at the same time
         isHit = true;
