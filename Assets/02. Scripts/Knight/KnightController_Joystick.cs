@@ -13,6 +13,8 @@ public class KnightController_Joystick : MonoBehaviour
     private bool isAttack;
     private bool isCombo;
 
+    private float atkDamage = 3f;
+
     private Vector3 inputDir;
     [SerializeField] private float moveSpeed = 3f;
     [SerializeField] private float jumpForce = 15f;
@@ -26,10 +28,6 @@ public class KnightController_Joystick : MonoBehaviour
         atkButton.onClick.AddListener(Attack);
     }
 
-    void Update()
-    {
- 
-    }
     public void InputJoystick(float x, float y)
     {
         inputDir = new Vector3(x, y, 0).normalized;
@@ -70,6 +68,7 @@ public class KnightController_Joystick : MonoBehaviour
         if (!isAttack)
         {
             isAttack = true;
+            atkDamage = 3f;
             animator.SetTrigger("Attack");
         }
         else
@@ -78,16 +77,33 @@ public class KnightController_Joystick : MonoBehaviour
         }
     }
 
-    public void CheckCombo()
+    public void WaitCombo()
     {
         if (isCombo)
         {
             animator.SetBool("isCombo", true);
+            atkDamage = 5f;
+            Debug.Log($"{atkDamage}로 공격");
         }
         else
         {
-            animator.SetBool("isCombo", false);
             isAttack = false;
+            animator.SetBool("isCombo", false);
+        }
+    }
+
+    public void EndCombo()
+    {
+        isAttack = false;
+        isCombo = false;
+        animator.SetBool("isCombo", false);
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.CompareTag("Monster"))
+        {
+            Debug.Log($"{atkDamage}로 공격");
         }
     }
 

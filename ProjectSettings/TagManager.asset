@@ -12,6 +12,7 @@ TagManager:
   - GameOver
   - Cherry
   - Pipe
+  - Monster
   layers:
   - Default
   - TransparentFX
