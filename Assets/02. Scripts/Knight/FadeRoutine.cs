@@ -11,7 +11,7 @@ public class FadeRoutine : MonoBehaviour
         StartCoroutine(Fade(fadeTime, color, isFadeStart));
     }
 
-    IEnumerator Fade(float fadeTime, Color color, bool isFadeStart)
+    public IEnumerator Fade(float fadeTime, Color color, bool isFadeStart)
     {
         float timer = 0f;
         float percent = 0f;
@@ -22,7 +22,7 @@ public class FadeRoutine : MonoBehaviour
             percent = timer / fadeTime;
             float value = isFadeStart ? percent : 1 - percent;
 
-            fadePanel.color = new Color(color.r, color.g, color.b, percent);
+            fadePanel.color = new Color(color.r, color.g, color.b, value);
             yield return null;
         }
     }
