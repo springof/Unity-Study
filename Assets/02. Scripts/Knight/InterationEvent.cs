@@ -6,6 +6,8 @@ public class InterationEvent : MonoBehaviour
     public enum InteractionType { SIGN, DOOR, NPC, MENU }
     public InteractionType type;
 
+    public SoundController soundController;
+
     public GameObject popUp;
 
     public FadeRoutine fade;
@@ -52,6 +54,8 @@ public class InterationEvent : MonoBehaviour
 
     IEnumerator DoorRoutine(Transform player)
     {
+        soundController.EventSoundPlay("Door");
+
         yield return StartCoroutine(fade.Fade(1f, Color.black, true));
 
         map.SetActive(isHouse);
@@ -61,6 +65,7 @@ public class InterationEvent : MonoBehaviour
         player.transform.position = pos;
 
         isHouse = !isHouse;
+
 
         yield return new WaitForSeconds(1f);
 
