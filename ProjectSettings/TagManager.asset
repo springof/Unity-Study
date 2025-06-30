@@ -13,6 +13,9 @@ TagManager:
   - Cherry
   - Pipe
   - Monster
+  - Ladder
+  - Jewel
+  - JewelBox
   layers:
   - Default
   - TransparentFX

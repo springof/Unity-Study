@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Unity.VisualScripting;
+using UnityEngine;
 
 public class KnightController_Keyboard : MonoBehaviour
 {
@@ -8,12 +9,14 @@ public class KnightController_Keyboard : MonoBehaviour
     private bool isGround;
     private bool isAttack;
     private bool isCombo;
+    private bool isLadder;
 
     private float atkDamage = 3f;
 
     private Vector3 inputDir;
     [SerializeField] private float moveSpeed = 3f;
     [SerializeField] private float jumpForce = 15f;
+    [SerializeField] private GameObject jewel;
 
     private void Start()
     {
@@ -41,6 +44,18 @@ public class KnightController_Keyboard : MonoBehaviour
 
         animator.SetFloat("JoystickX", inputDir.x);
         animator.SetFloat("JoystickY", inputDir.y);
+
+        if (inputDir.y < 0)
+        {
+            GetComponent<CapsuleCollider2D>().size = new Vector2(0.9f, 1.4f);
+            GetComponent<CapsuleCollider2D>().offset = new Vector2(0f, 0.7f);
+        }
+        else
+        {
+            GetComponent<CapsuleCollider2D>().size = new Vector2(0.9f, 1.9f);
+            GetComponent<CapsuleCollider2D>().offset = new Vector2(0f, 0.95f);
+        }
+
     }
 
     void Move()
@@ -51,6 +66,11 @@ public class KnightController_Keyboard : MonoBehaviour
             transform.localScale = new Vector3(scaleX, 1, 1);
 
             knightRb.linearVelocityX = inputDir.x * moveSpeed;
+        }
+
+        if (isLadder && inputDir.y != 0)
+        {
+            knightRb.linearVelocityY = inputDir.y * moveSpeed;
         }
     }
 
@@ -117,6 +137,40 @@ public class KnightController_Keyboard : MonoBehaviour
         {
             animator.SetBool("isGround", false);
             isGround = false;
+        }
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Monster"))
+        {
+            Debug.Log($"{atkDamage}의 데미지를 입힘");
+        }
+        if (other.CompareTag("Ladder"))
+        {
+            isLadder = true;
+            knightRb.gravityScale = 0f; // Disable gravity when on ladder
+            knightRb.linearVelocity = Vector2.zero;
+        }
+        if (other.CompareTag("Jewel"))
+        {
+            Debug.Log("보석을 획득했다.");
+            jewel.SetActive(false); // Deactivate jewel object
+        }
+        if (other.CompareTag("JewelBox"))
+        {
+            Debug.Log("보석을 내려놓았다.");
+            MovingPlatform.isOn = true; // Activate moving platform
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.CompareTag("Ladder"))
+        {
+            isLadder = false;
+            knightRb.gravityScale = 2f; // Re-enable gravity when off ladder
+            knightRb.linearVelocity = Vector2.zero;
         }
     }
 }
