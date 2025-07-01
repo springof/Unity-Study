@@ -16,6 +16,7 @@ TagManager:
   - Ladder
   - Jewel
   - JewelBox
+  - Return
   layers:
   - Default
   - TransparentFX
