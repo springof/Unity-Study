@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3942090506039058451}
   - component: {fileID: 2725066895441618077}
   - component: {fileID: 6746775944225606182}
-  - component: {fileID: -3184988809418770474}
+  - component: {fileID: -7677288082173948214}
   m_Layer: 10
   m_Name: HPMax
   m_TagString: Untagged
@@ -153,7 +153,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &-3184988809418770474
+--- !u!114 &-7677288082173948214
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -162,7 +162,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 4309761418798367354}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce5b691b3fade1c4987835832a94cc90, type: 3}
+  m_Script: {fileID: 11500000, guid: df74664585aaf71458ef7a3d037f5f91, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  potionType: 3

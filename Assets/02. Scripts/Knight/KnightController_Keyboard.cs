@@ -1,27 +1,38 @@
-﻿using Unity.VisualScripting;
+﻿using System;
 using UnityEngine;
+using UnityEngine.InputSystem.Processors;
+using UnityEngine.UI;
 
-public class KnightController_Keyboard : MonoBehaviour
+public class KnightController_Keyboard : MonoBehaviour, IDamageable
 {
     private Animator animator;
     private Rigidbody2D knightRb;
-
-    private bool isGround;
-    private bool isAttack;
-    private bool isCombo;
-    private bool isLadder;
-
-    private float atkDamage = 3f;
+    private Collider2D knightColl;
+    [SerializeField] private Image hpBar;
 
     private Vector3 inputDir;
     [SerializeField] private float moveSpeed = 3f;
     [SerializeField] private float jumpForce = 15f;
     [SerializeField] private GameObject jewel;
 
+    private bool isGround;
+    private bool isAttack;
+    private bool isCombo;
+    private bool isLadder;
+
+    public float hp = 100f; // Knight's health points
+    public float currHp;
+
+    private float atkDamage = 3f;
+
     private void Start()
     {
         animator = GetComponent<Animator>();
         knightRb = GetComponent<Rigidbody2D>();
+        knightColl = GetComponent<Collider2D>();
+
+        currHp = hp;
+        hpBar.fillAmount = currHp / hp;
     }
 
     void Update()
@@ -162,6 +173,15 @@ public class KnightController_Keyboard : MonoBehaviour
             Debug.Log("보석을 내려놓았다.");
             MovingPlatform.isOn = true; // Activate moving platform
         }
+
+        if (other.CompareTag("Monster"))
+        {
+            if (other.GetComponent<IDamageable>() != null)
+            {
+                other.GetComponent<IDamageable>().TakeDamage(atkDamage);
+                other.GetComponent<Animator>().SetTrigger("Hit");
+            }
+        }
     }
 
     private void OnTriggerExit2D(Collider2D other)
@@ -172,5 +192,23 @@ public class KnightController_Keyboard : MonoBehaviour
             knightRb.gravityScale = 2f; // Re-enable gravity when off ladder
             knightRb.linearVelocity = Vector2.zero;
         }
+    }
+
+    public void TakeDamage(float damage)
+    {
+        currHp -= damage;
+
+        hpBar.fillAmount = currHp / hp;
+
+        if (currHp <= 0)
+            Death();
+    }
+
+    public void Death()
+    {
+        Debug.Log("Knight has died.");
+        animator.SetTrigger("Death");
+        knightColl.enabled = false; // Disable collider on death
+        knightRb.gravityScale = 0f; // Disable gravity on death
     }
 }
