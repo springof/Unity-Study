@@ -5,7 +5,7 @@ using static MonsterCore;
 
 public class Goblin : MonsterCore
 {
-    private float timer = 0f;
+    private float timer;
     private float idleTime, patrolTime;
 
     private float traceDist = 5f;
@@ -33,6 +33,7 @@ public class Goblin : MonsterCore
         {
             yield return null;
             targetDist = Vector2.Distance(transform.position, target.position);
+
             if (monsterState == MonsterState.IDLE || monsterState == MonsterState.PATROL)
             {
                 Vector3 monsterDir = Vector3.right * moveDir; // 몬스터가 바라보는 방향
@@ -40,12 +41,12 @@ public class Goblin : MonsterCore
 
                 float dotValue = Vector3.Dot(monsterDir, playerDir); // 방향의 내적값
 
-                isTrace = dotValue < -0.7f && dotValue >= -1f;
+                isTrace = dotValue < -0.5f && dotValue >= -1f;
 
                 if (targetDist <= traceDist && isTrace)
                 {
-                    ChangeState(MonsterState.TRACE);
                     animator.SetBool("isRun", true);
+                    ChangeState(MonsterState.TRACE);
                 }
             }
             // 몬스터가 플레이어를 바라보고 있는지 확인 음수가 나오면 플레이어를 바라보고 있는 것
@@ -61,9 +62,8 @@ public class Goblin : MonsterCore
 
                 }
 
-                if (targetDist <= attackDist)
+                if (targetDist < attackDist)
                 {
-                    animator.SetBool("isRun", false);
                     ChangeState(MonsterState.ATTACK);
                 }
             }
@@ -110,7 +110,7 @@ public class Goblin : MonsterCore
 
         var scaleX = targetDir.x > 0 ? 1 : -1;
         transform.localScale = new Vector3(scaleX, 1, 1);
-        hpBar.transform.position = new Vector3(scaleX, 1, 1);
+        hpBar.transform.localScale = new Vector3(scaleX, 1, 1);
     }
 
     public override void Attack()
@@ -130,7 +130,7 @@ public class Goblin : MonsterCore
         var targetDir = (target.position - transform.position).normalized;
         var scaleX = targetDir.x > 0 ? 1 : -1;
         transform.localScale = new Vector3(scaleX, 1, 1);
-        hpBar.transform.position = new Vector3(scaleX, 1, 1);
+        hpBar.transform.localScale = new Vector3(scaleX, 1, 1);
         yield return new WaitForSeconds(atkCoolTime - 1f); // 공격 애니메이션 시간 동안 대기
 
         isAttack = false;

@@ -12,7 +12,7 @@ public class HpPotion : MonoBehaviour, IItemObject
         Inventory = FindFirstObjectByType<ItemManager>();
 
         Obj = gameObject;
-        ItemName = "HP Potion";
+        ItemName = name;
         Icon = GetComponent<SpriteRenderer>().sprite;
     }
 
@@ -25,7 +25,7 @@ public class HpPotion : MonoBehaviour, IItemObject
     }
     public void Use()
     {
-        Debug.Log("HP 포션 사용");
+        Debug.Log("아이템 사용");
     }
 
     void OnCollisionEnter2D(Collision2D other)
